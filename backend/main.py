@@ -30,6 +30,8 @@ DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1508110670753824998/_LIH
 
 def envoyer_alerte_critique(titre, message):
     """Envoi d'un webhook vers Discord lors d'une levée d'exception globale"""
+    if not DISCORD_WEBHOOK_URL:
+        return
     payload = {
         "embeds": [{
             "title": f"🚨 {titre}",
@@ -48,16 +50,15 @@ def handle_exception(e):
     """Centralisation de la gestion des erreurs internes (HTTP 500)"""
     error_msg = str(e)
     
-    # 1. Écriture de l'erreur dans les logs d'Azure / Render
+    # Persistance du traceback dans les logs applicatifs (Azure/Render)
     logging.critical(f"CRASH APPLICATION: {error_msg}", exc_info=True)
     
-    # 2. Envoie instantanée de l'alerte sur Discord
+    # Notification push via le Webhook
     envoyer_alerte_critique(
         titre="CRASH SERVEUR - Erreur 500",
         message=f"Une erreur critique est survenue sur l'application.\nErreur : `{error_msg}`"
     )
     
-    # 3. Réponse 
     return jsonify({
         "error": "Internal Server Error",
         "message": "Une erreur technique est survenue. L'équipe technique a été alertée."
