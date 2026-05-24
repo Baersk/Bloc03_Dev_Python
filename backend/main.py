@@ -10,6 +10,7 @@ from flask import jsonify
 from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
+from sqlalchemy.exc import OperationalError
 
 # AJUSTEMENT SÉCURISÉ DES IMPORTS POUR LA PRODUCTION (Render/Azure)
 current_dir = str(Path(__file__).parent)
@@ -46,6 +47,7 @@ def envoyer_alerte_critique(titre, message):
 
 @app.errorhandler(500)
 @app.errorhandler(Exception)
+@app.errorhandler(OperationalError)
 def handle_exception(e):
     """Centralisation de la gestion des erreurs internes (HTTP 500)"""
     error_msg = str(e)
