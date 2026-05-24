@@ -66,6 +66,12 @@ def handle_exception(e):
         "message": "Une erreur technique est survenue. L'équipe technique a été alertée."
     }), 500
 
+# Test pour Operational Error
+@app.route('/api/test-error')
+def test_error():
+    from sqlalchemy.exc import OperationalError
+    raise OperationalError("Test de panne Azure", None, None)
+
 # Shell context pour flask shell
 @app.shell_context_processor
 def make_shell_context():
