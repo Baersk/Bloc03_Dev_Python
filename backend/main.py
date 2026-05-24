@@ -4,6 +4,9 @@ Bloc03_Baers - Backend API
 
 import os
 import sys
+import logging
+import requests
+from flask import jsonify
 from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
@@ -22,6 +25,44 @@ from app import create_app, db
 # Application Flask
 app = create_app(config_name=os.getenv("FLASK_ENV", "development"))
 
+# CONFIGURATION DE SÉCURITÉ ET ALERTING DISCORD
+DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1508110670753824998/_LIH_nqLYTuyh_xQhfgZfmav6-E2bjDgFvesVVAM9_wA_zRcwb4I84414kk7m98dVTkK"
+
+def envoyer_alerte_critique(titre, message):
+    """Envoi d'un webhook vers Discord lors d'une levée d'exception globale"""
+    payload = {
+        "embeds": [{
+            "title": f"🚨 {titre}",
+            "description": f"**Détails :**\n{message}",
+            "color": 15158332  
+        }]
+    }
+    try:
+        requests.post(DISCORD_WEBHOOK_URL, json=payload, timeout=5)
+    except Exception as e:
+        logging.error(f"Impossible d'envoyer l'alerte Discord: {e}")
+
+@app.errorhandler(500)
+@app.errorhandler(Exception)
+def handle_exception(e):
+    """Centralisation de la gestion des erreurs internes (HTTP 500)"""
+    error_msg = str(e)
+    
+    # 1. Écriture de l'erreur dans les logs d'Azure / Render
+    logging.critical(f"CRASH APPLICATION: {error_msg}", exc_info=True)
+    
+    # 2. Envoie instantanée de l'alerte sur Discord
+    envoyer_alerte_critique(
+        titre="CRASH SERVEUR - Erreur 500",
+        message=f"Une erreur critique est survenue sur l'application.\nErreur : `{error_msg}`"
+    )
+    
+    # 3. Réponse 
+    return jsonify({
+        "error": "Internal Server Error",
+        "message": "Une erreur technique est survenue. L'équipe technique a été alertée."
+    }), 500
+
 # Shell context pour flask shell
 @app.shell_context_processor
 def make_shell_context():
@@ -30,7 +71,7 @@ def make_shell_context():
     return {"db": db, "User": User, "Vehicle": Vehicle, "Application": Application}
 
 if __name__ == "__main__":
-    # Lancer le serveur de développement local
+    # Lancement du serveur Local
     with app.app_context():
         # --- VÉRIFICATION DE LA CONNEXION CLOUD ---
         db_url = os.getenv("DATABASE_URL", "")
