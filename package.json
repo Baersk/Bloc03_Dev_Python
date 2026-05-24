@@ -1,0 +1,17 @@
+{
+  "name": "bloc03-baers",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:frontend": "cd frontend && pnpm dev",
+    "dev:backend": "cd backend && python main.py",
+    "build:frontend": "cd frontend && pnpm build",
+    "preview:frontend": "cd frontend && pnpm preview",
+    "format": "cd frontend && pnpm format:fix"
+  },
+  "workspaces": [
+    "frontend"
+  ],
+  "packageManager": "pnpm@10.14.0"
+}

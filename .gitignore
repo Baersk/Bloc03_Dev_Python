@@ -1,0 +1,68 @@
+# Frontend (node) & Backend (python), Dossiers et fichiers Temporaires
+node_modules/
+.vite/
+dist/
+build/
+backend/venv/
+backend/.venv/
+backend/uploads/
+
+# Frontend (node) & Backend (python), Fichiers de logs globaux
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# CACHE ET COMPILATION PYTHON
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+backend/develop-eggs/
+backend/eggs/
+backend/.eggs/
+backend/lib/
+backend/lib64/
+backend/parts/
+backend/sdist/
+backend/var/
+backend/wheels/
+backend/pip-wheel-metadata/
+backend/share/python-wheels/
+
+# ===== Environment Variables =====
+.env
+.env.local
+.env.*
+.env.*.local
+**/.env
+**/.env.local
+
+# BASES DE DONNÉES LOCALES
+
+backend/instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# CONFIGURATIONS LOGICIELS & SYSTÈMES (IDE / OS)
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-workspace
+*.sublime-project
+.DS_Store
+Thumbs.db
+.windows/
+
+# DOCUMENTATION INTERNE
+PROJECT_STRUCTURE.md
+ADMIN_DOSSIERS_GUIDE.md
+AGENTS.md
+QUICKSTART.md
+SETUP_GUIDE.md
+
