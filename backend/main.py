@@ -26,8 +26,8 @@ from app import create_app, db
 # Application Flask
 app = create_app(config_name=os.getenv("FLASK_ENV", "development"))
 
-# CONFIGURATION DE SÉCURITÉ ET ALERTING DISCORD
-DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1508110670753824998/_LIH_nqLYTuyh_xQhfgZfmav6-E2bjDgFvesVVAM9_wA_zRcwb4I84414kk7m98dVTkK"
+# RÉCUPÉRATION SÉCURISÉE DU WEBHOOK DEPUIS LE .env
+DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
 
 def envoyer_alerte_critique(titre, message):
     """Envoi d'un webhook vers Discord lors d'une levée d'exception globale"""
