@@ -92,6 +92,10 @@ Se connecter - Pour se logger
 
 
 
+# Test unitaires Frontend: (Ce projet utilise Vitest en combinaison avec React Testing Library)
+Execution du test cd frontend - npx vitest run (Exécute tous les tests une seule fois)
+
+
 # Notes:
 
 alembic.ini & script.py.mako: Fichier de configuration d'Alembic généré par Flask-Migrate. Pour ce livrable, je ne m'en sers pas car j'utilise db.create_all() dans mon Application Factory pour générer automatiquement mon schéma SQL sur Azure PostgreSQL. Cependant, je l'ai conservé pour anticiper de futures versions où je devrai gérer des migrations de données complexes.
